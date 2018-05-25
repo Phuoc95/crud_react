@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Product;
 
 class ProductController extends Controller
 {
@@ -13,8 +14,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $product = Product::all();
-        return reponse()->json($product);
+        $products = Product::all();
+        return response()->json($products);
     }
 
     /**
@@ -35,7 +36,10 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $product = new Product;
+        $product->title = $request->title;
+        $product->body = $request->body;
+        $product->save();
     }
 
     /**
@@ -57,7 +61,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = Product::find($id);
+        return response()->json($product);
     }
 
     /**
@@ -69,7 +74,11 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = Product::find($id);
+        $product->title = $request->get('title');
+        $product->body = $request->get('body');
+        $product->save();
+        return response()->json('Cập nhật thành công.');
     }
 
     /**
@@ -80,6 +89,9 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+        $product->delete(); 
+  
+        return response()->json('Xóa thành công.');
     }
 }
